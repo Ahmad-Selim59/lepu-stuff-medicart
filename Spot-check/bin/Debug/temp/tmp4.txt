@@ -1,0 +1,5 @@
+Program Start at : 2021-07-12 16:23:04
+Port 18 after open OK at : 2021-07-12 16:23:28
+timer2, Port open at : 2021-07-12 16:23:28
+addr_cnt  = 1 COM: 18 , PC-100 , (88:1B:99:1B:E4:6C) , standard BT End at : 2021-07-12 16:23:30
+destroy file 

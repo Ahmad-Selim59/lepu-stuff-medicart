@@ -1,0 +1,103 @@
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.exe
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.pdb
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\ResolveAssemblyReference.cache
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.baml
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.g.cs
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\App.g.cs
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13_MarkupCompile.cache
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.g.resources
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018_11_13.Properties.Resources.resources
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.read.1.tlog
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.write.1.tlog
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.exe
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.pdb
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\bin\Debug\SpotCheck.exe
+d:\my documents\visual studio 2010\Projects\WpfApplication_2018-11-13\WpfApplication_2018-11-13\bin\Debug\SpotCheck.pdb
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.exe
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.pdb
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.exe
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.pdb
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\bin\Debug\SpotCheck.exe
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\bin\Debug\SpotCheck.pdb
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\ResolveAssemblyReference.cache
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.baml
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.g.cs
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\App.g.cs
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13_MarkupCompile.cache
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.g.resources
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018_11_13.Properties.Resources.resources
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.read.1.tlog
+H:\wxh_development\vsTest\WpfApplication_2018-11-13\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.write.1.tlog
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.exe
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.pdb
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.exe
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.pdb
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\bin\Debug\SpotCheck.exe
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\bin\Debug\SpotCheck.pdb
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\obj\x86\Debug\ResolveAssemblyReference.cache
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.baml
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.g.cs
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\obj\x86\Debug\App.g.cs
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13_MarkupCompile.cache
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.g.resources
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018_11_13.Properties.Resources.resources
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.read.1.tlog
+H:\wxh_development\vsTest\WpfApplication_2018-11-13_BDE_test\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.write.1.tlog
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.exe
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.pdb
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.exe
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.pdb
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\bin\Debug\SpotCheck.exe
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\bin\Debug\SpotCheck.pdb
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\ResolveAssemblyReference.cache
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.baml
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.g.cs
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\App.g.cs
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13_MarkupCompile.cache
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.g.resources
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018_11_13.Properties.Resources.resources
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.read.1.tlog
+I:\temp\chencl\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.write.1.tlog
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.exe
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.pdb
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.exe
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.pdb
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.exe
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.pdb
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\bin\Debug\SpotCheck.exe
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\bin\Debug\SpotCheck.pdb
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\ResolveAssemblyReference.cache
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.baml
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.g.cs
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\App.g.cs
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13_MarkupCompile.cache
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.g.resources
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018_11_13.Properties.Resources.resources
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.read.1.tlog
+I:\wxh_files\SDK_Source\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.write.1.tlog
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.exe
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.pdb
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\bin\Debug\SpotCheck.exe
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\bin\Debug\SpotCheck.pdb
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\ResolveAssemblyReference.cache
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.baml
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.g.cs
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\App.g.cs
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13_MarkupCompile.cache
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.g.resources
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018_11_13.Properties.Resources.resources
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.read.1.tlog
+H:\wxh_development\vsTest\Oximeter_C#_WPF_BDE_serialPort_Demo_(AP-20,POD,PC-68B,PC-60NW)\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.write.1.tlog
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.exe
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.pdb
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.exe
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\bin\Debug\WpfApplication_2018-11-13.pdb
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\obj\x86\Debug\ResolveAssemblyReference.cache
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.baml
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\obj\x86\Debug\MainWindow.g.cs
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\obj\x86\Debug\App.g.cs
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13_MarkupCompile.cache
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018-11-13.g.resources
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\obj\x86\Debug\WpfApplication_2018_11_13.Properties.Resources.resources
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.read.1.tlog
+H:\wxh_development\vsTest\Spot-check_C#_WPF_BDE_serialPort_Demo_(PC-300)\WpfApplication_2018-11-13\obj\x86\Debug\GenerateResource.write.1.tlog

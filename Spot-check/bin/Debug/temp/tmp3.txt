@@ -1,0 +1,7 @@
+Program Start at : 2020-08-18 16:09:51
+Port 30 after open ERROR at : 2020-08-18 16:10:28
+timer2, Port open at : 2020-08-18 16:10:28
+Port 30 after open OK at : 2020-08-18 16:10:45
+timer2, Port open at : 2020-08-18 16:10:45
+addr_cnt  = 2 COM: 30 , PC_300SNT , (C0:17:12:01:05:0B) , standard BT End at : 2020-08-18 16:10:48
+destroy file 
