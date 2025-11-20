@@ -49,6 +49,14 @@ namespace LepuCli
                 Console.WriteLine("  lepu_cli.exe -nibp        # Start BP cuff inflation & result");
                 Console.WriteLine("  lepu_cli.exe -glu         # Listen for Glucose meter data");
                 Console.WriteLine("  lepu_cli.exe -temperature # Query & listen for Temperature data");
+                Console.WriteLine("");
+                Console.WriteLine("Data Format (Stdout):");
+                Console.WriteLine("  Heart Rate:  DATA:PR={int},SPO2={int} | STATUS:PROBE_OFF");
+                Console.WriteLine("  NIBP (Live): DATA:CUFF_PRESSURE={int}");
+                Console.WriteLine("  NIBP (End):  DATA:NIBP_RESULT:SYS={int},DIA={int},MAP={int},PR={int},IRR={bool}");
+                Console.WriteLine("  NIBP (Err):  STATUS:NIBP_ERROR={int}");
+                Console.WriteLine("  Glucose:     DATA:GLU={int} (mg/dL)");
+                Console.WriteLine("  Temp:        DATA:TEMP={float} (Celsius)");
                 return;
             }
 
