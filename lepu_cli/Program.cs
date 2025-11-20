@@ -40,17 +40,23 @@ namespace LepuCli
                 Console.WriteLine("Options:");
                 Console.WriteLine("  -heartrate    Start in continuous Heart Rate / SpO2 monitoring mode (default).");
                 Console.WriteLine("  -nibp         Trigger a Blood Pressure (NIBP) measurement immediately.");
+                Console.WriteLine("  -glu          Monitor for Blood Glucose readings.");
+                Console.WriteLine("  -temperature  Monitor/Query for Temperature readings.");
                 Console.WriteLine("  -help         Show this help message.");
                 Console.WriteLine("");
                 Console.WriteLine("Examples:");
                 Console.WriteLine("  lepu_cli.exe -heartrate   # Stream PR/SpO2");
                 Console.WriteLine("  lepu_cli.exe -nibp        # Start BP cuff inflation & result");
+                Console.WriteLine("  lepu_cli.exe -glu         # Listen for Glucose meter data");
+                Console.WriteLine("  lepu_cli.exe -temperature # Query & listen for Temperature data");
                 return;
             }
 
             string mode = "auto";
             if (args.Contains("-heartrate")) mode = "heartrate";
-            if (args.Contains("-nibp")) mode = "nibp"; 
+            if (args.Contains("-nibp")) mode = "nibp";
+            if (args.Contains("-glu")) mode = "glu";
+            if (args.Contains("-temperature")) mode = "temperature";
 
             string? selectedPort = AutoDetectPort();
 
@@ -75,6 +81,21 @@ namespace LepuCli
                     {
                          Console.WriteLine("Sending Start NIBP Command...");
                          StartNibp(port);
+                    }
+                    else if (mode == "temperature")
+                    {
+                         Console.WriteLine("Sending Query Temp Command...");
+                         // AA 55 72 02 03 04 (Query Temp Mode)
+                         // This often prompts the device to send current status/mode
+                         byte[] cmd = { 0xAA, 0x55, 0x72, 0x02, 0x03, 0x04 };
+                         port.Write(cmd, 0, cmd.Length);
+                    }
+                    else if (mode == "glu")
+                    {
+                         Console.WriteLine("Checking Glucose Device...");
+                         // AA 55 E4 02 01 41 (Check GLU Device Type)
+                         byte[] cmd = { 0xAA, 0x55, 0xE4, 0x02, 0x01, 0x41 };
+                         port.Write(cmd, 0, cmd.Length);
                     }
 
                     Console.WriteLine($"Streaming data... Mode: {mode}");
@@ -124,18 +145,11 @@ namespace LepuCli
                         p.WriteTimeout = 500;
                         p.Open();
                         
-                        // Send a quick wake-up command (Set Scan On)
                         p.WriteLine("SPP:setScan on \r\n\0");
                         
-                        // Listen for ~500ms for any valid header
-                        // The device/dongle usually echos commands or sends status immediately
-                        // We look for the packet header 0xAA 0x55
-                        
-                        // We give it a few read attempts
                         byte[] buf = new byte[256];
                         int totalRead = 0;
                         
-                        // Give it a moment to reply
                         Thread.Sleep(200); 
                         
                         if (p.BytesToRead > 0)
@@ -143,7 +157,6 @@ namespace LepuCli
                             totalRead = p.Read(buf, 0, Math.Min(p.BytesToRead, buf.Length));
                         }
                         
-                        // Check for 0xAA 0x55 sequence in the response
                         for (int i = 0; i < totalRead - 1; i++)
                         {
                             if (buf[i] == 0xAA && buf[i+1] == 0x55)
@@ -152,7 +165,6 @@ namespace LepuCli
                             }
                         }
                         
-                        // If we didn't see the header, try reading one more time just in case
                         Thread.Sleep(200);
                         if (p.BytesToRead > 0)
                         {
@@ -171,7 +183,6 @@ namespace LepuCli
                 }
                 catch 
                 {
-                    // Port busy or access denied, skip it
                 }
             }
             return null;
@@ -191,14 +202,12 @@ namespace LepuCli
 
         private static void StartNibp(SerialPort port)
         {
-            // AA 55 40 02 01 29
             byte[] cmd = { 0xAA, 0x55, 0x40, 0x02, 0x01, 0x29 };
             port.Write(cmd, 0, cmd.Length);
         }
 
         private static void StopNibp(SerialPort port)
         {
-            // AA 55 40 02 02 CB
             byte[] cmd = { 0xAA, 0x55, 0x40, 0x02, 0x02, 0xCB };
             port.Write(cmd, 0, cmd.Length);
         }
@@ -260,45 +269,64 @@ namespace LepuCli
                     }
                 }
             }
-            // NIBP Status/Control (Type 0x40)
-            else if (type == 0x40)
+            // NIBP
+            else if (type == 0x40 || type == 0x42 || type == 0x43)
             {
-                if (subType == 0x01) Console.WriteLine("STATUS:NIBP_START");
-                else if (subType == 0x02) Console.WriteLine("STATUS:NIBP_END");
-            }
-            // NIBP Real-time Cuff Pressure (Type 0x42)
-            else if (type == 0x42 && subType == 0x01)
-            {
-                 // Real-time pressure during inflation
-                 // tmpSysVal = ((Arr_answer[i+5] & 0x0f) << 8) + Arr_answer[i+6];
-                 int cuffPressure = ((packet[5] & 0x0F) << 8) + packet[6];
-                 Console.WriteLine($"DATA:CUFF_PRESSURE={cuffPressure}");
-            }
-            // NIBP Final Result (Type 0x43)
-            else if (type == 0x43)
-            {
-                if (subType == 0x01)
+                if (mode == "nibp" || mode == "auto")
                 {
-                    // Parsing logic from MainWindow.xaml.cs lines 1007-1010:
-                    // tmpSysVal = ((Arr_answer[i+5] & 0x0f) << 8) + Arr_answer[i+6];
-                    // tmpMapVal = Arr_answer[i+7];
-                    // tmpDiaVal = Arr_answer[i+8];
-                    // tmpPrVal = Arr_answer[i+9];
-                    
-                    int sys = ((packet[5] & 0x0F) << 8) + packet[6];
-                    int map = packet[7];
-                    int dia = packet[8];
-                    int pr = packet[9];
-                    
-                    bool irregularRhythm = (packet[5] & 0x80) == 0x80;
-
-                    Console.WriteLine($"DATA:NIBP_RESULT:SYS={sys},DIA={dia},MAP={map},PR={pr},IRR={irregularRhythm}");
+                     if (type == 0x40 && subType == 0x01) Console.WriteLine("STATUS:NIBP_START");
+                     else if (type == 0x40 && subType == 0x02) Console.WriteLine("STATUS:NIBP_END");
+                     else if (type == 0x42 && subType == 0x01)
+                     {
+                         int cuffPressure = ((packet[5] & 0x0F) << 8) + packet[6];
+                         Console.WriteLine($"DATA:CUFF_PRESSURE={cuffPressure}");
+                     }
+                     else if (type == 0x43)
+                     {
+                        if (subType == 0x01)
+                        {
+                            int sys = ((packet[5] & 0x0F) << 8) + packet[6];
+                            int map = packet[7];
+                            int dia = packet[8];
+                            int pr = packet[9];
+                            bool irregularRhythm = (packet[5] & 0x80) == 0x80;
+                            Console.WriteLine($"DATA:NIBP_RESULT:SYS={sys},DIA={dia},MAP={map},PR={pr},IRR={irregularRhythm}");
+                        }
+                        else if (subType == 0x02)
+                        {
+                            int err = packet[5];
+                            Console.WriteLine($"STATUS:NIBP_ERROR={err}");
+                        }
+                     }
                 }
-                else if (subType == 0x02) // Error
-                {
-                    int err = packet[5];
-                    Console.WriteLine($"STATUS:NIBP_ERROR={err}");
-                }
+            }
+            // Temperature (Type 0x72)
+            else if (type == 0x72)
+            {
+                // Subtype 0x02 often is the mode/result
+                // Looking at code:
+                // tmpTempVal = ((Arr_answer[i+5] & 0x0F) << 8) + Arr_answer[i+6];
+                // tmpTempInt = (Arr_answer[i+5] & 0xF0) >> 4; (Mode?)
+                // Let's assume standard decimal format (integer part + decimal part logic varies).
+                // Based on typical usage:
+                // [5] is high byte, [6] is low byte for value * 10
+                // Or [5] is integer, [6] is decimal?
+                // Let's output generic TEMP bytes if unsure, but usually it's a short.
+                
+                // Let's assume simple 2-byte value for now:
+                int rawTemp = ((packet[5] & 0xFF) << 8) + packet[6];
+                double temp = rawTemp / 10.0; // Usually x10
+                
+                Console.WriteLine($"DATA:TEMP={temp:F1}");
+            }
+            // Glucose (Type 0xE3, 0xE4)
+            else if (type == 0xE3 || type == 0xE4)
+            {
+                // Often: [5] = Value High, [6] = Value Low (or vice versa)
+                // Let's dump it. Usually GLU is in mg/dL or mmol/L * 10 or 18.
+                int gluVal = ((packet[5] & 0xFF) << 8) + packet[6];
+                // Unit often in another byte or implied.
+                Console.WriteLine($"DATA:GLU={gluVal}");
             }
         }
     }
