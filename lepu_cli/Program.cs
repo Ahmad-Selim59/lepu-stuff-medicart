@@ -31,43 +31,31 @@ namespace LepuCli
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Lepu Device CLI");
-            string[] ports = SerialPort.GetPortNames();
-            if (ports.Length == 0)
+            string mode = "auto";
+            if (args.Contains("-heartrate")) mode = "heartrate";
+            if (args.Contains("-nibp")) mode = "nibp"; // Placeholder for future
+
+            string? selectedPort = AutoDetectPort();
+
+            if (selectedPort == null)
             {
-                Console.WriteLine("No serial ports found.");
+                Console.WriteLine("Error: No Lepu device detected on any serial port.");
+                Console.WriteLine("Make sure the dongle is plugged in and not in use by another app.");
                 return;
             }
 
-            Console.WriteLine("Available Ports:");
-            for (int i = 0; i < ports.Length; i++)
-            {
-                Console.WriteLine($"[{i}] {ports[i]}");
-            }
-
-            Console.Write("Select port index (default 0): ");
-            string? input = Console.ReadLine();
-            int portIndex = 0;
-            if (!string.IsNullOrEmpty(input))
-            {
-                int.TryParse(input, out portIndex);
-            }
-
-            if (portIndex < 0 || portIndex >= ports.Length) portIndex = 0;
-            string selectedPort = ports[portIndex];
-            Console.WriteLine($"Connecting to {selectedPort}...");
+            Console.WriteLine($"Detected Lepu device on {selectedPort}. Connecting...");
 
             using (SerialPort port = new SerialPort(selectedPort, 115200, Parity.None, 8, StopBits.One))
             {
                 try
                 {
                     port.Open();
-                    
-                    // Initialize Connection (Sequence from original app)
+                    // Re-send init in case it was just a quick probe
                     InitializeConnection(port);
 
-                    Console.WriteLine("Listening for data... (Press Ctrl+C to exit)");
-
+                    Console.WriteLine($"Streaming data... Mode: {mode}");
+                    
                     // Read Loop
                     List<byte> buffer = new List<byte>();
                     byte[] readBuf = new byte[1024];
@@ -81,148 +69,156 @@ namespace LepuCli
                             {
                                 buffer.Add(readBuf[i]);
                             }
-
-                            ProcessBuffer(buffer);
+                            ProcessBuffer(buffer, mode);
                         }
-                        Thread.Sleep(10); // Prevent high CPU usage
+                        Thread.Sleep(10);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
+                    Console.WriteLine($"Connection lost: {ex.Message}");
                 }
             }
         }
 
-        private static void InitializeConnection(SerialPort port)
+        /// <summary>
+        /// Scans all available serial ports to find one that looks like a Lepu device.
+        /// </summary>
+        private static string? AutoDetectPort()
         {
-            // Sequence to wake up/connect to the dongle/device
-            Console.WriteLine("Sending init sequence...");
-            
-            // Disconnect first
-            port.WriteLine("SPP:disconnect \r\n\0");
-            Thread.Sleep(70);
+            string[] ports = SerialPort.GetPortNames();
+            if (ports.Length == 0) return null;
 
-            // Stop scan
-            port.WriteLine("SPP:setScan off \r\n\0");
-            Thread.Sleep(70);
+            Console.WriteLine($"Scanning {ports.Length} ports: {string.Join(", ", ports)}...");
 
-            // Start scan (this often triggers the auto-reconnect on these dongles)
-            port.WriteLine("SPP:setScan on \r\n\0");
-            Thread.Sleep(70);
-            
-            // Set interval
-            port.WriteLine("SPP:setConnInt 10 20 0 200 \r\n\0");
-            Thread.Sleep(70);
+            foreach (var portName in ports)
+            {
+                try 
+                {
+                    using (SerialPort p = new SerialPort(portName, 115200, Parity.None, 8, StopBits.One))
+                    {
+                        p.ReadTimeout = 500; 
+                        p.WriteTimeout = 500;
+                        p.Open();
+                        
+                        // Send a quick wake-up command (Set Scan On)
+                        p.WriteLine("SPP:setScan on \r\n\0");
+                        
+                        // Listen for ~500ms for any valid header
+                        // The device/dongle usually echos commands or sends status immediately
+                        // We look for the packet header 0xAA 0x55
+                        
+                        // We give it a few read attempts
+                        byte[] buf = new byte[256];
+                        int totalRead = 0;
+                        
+                        // Give it a moment to reply
+                        Thread.Sleep(200); 
+                        
+                        if (p.BytesToRead > 0)
+                        {
+                            totalRead = p.Read(buf, 0, Math.Min(p.BytesToRead, buf.Length));
+                        }
+                        
+                        // Check for 0xAA 0x55 sequence in the response
+                        for (int i = 0; i < totalRead - 1; i++)
+                        {
+                            if (buf[i] == 0xAA && buf[i+1] == 0x55)
+                            {
+                                return portName;
+                            }
+                        }
+                        
+                        // If we didn't see the header, try reading one more time just in case
+                        Thread.Sleep(200);
+                        if (p.BytesToRead > 0)
+                        {
+                            int more = p.Read(buf, totalRead, Math.Min(p.BytesToRead, buf.Length - totalRead));
+                            totalRead += more;
+                        }
 
-            Console.WriteLine("Init sequence sent.");
+                        for (int i = 0; i < totalRead - 1; i++)
+                        {
+                            if (buf[i] == 0xAA && buf[i+1] == 0x55)
+                            {
+                                return portName;
+                            }
+                        }
+                    }
+                }
+                catch 
+                {
+                    // Port busy or access denied, skip it
+                }
+            }
+            return null;
         }
 
-        private static void ProcessBuffer(List<byte> buffer)
+        private static void InitializeConnection(SerialPort port)
         {
-            // We need at least header (2) + type (1) + len (1) + min_payload (1) + crc (1) = 6 bytes
+            port.WriteLine("SPP:disconnect \r\n\0");
+            Thread.Sleep(50);
+            port.WriteLine("SPP:setScan off \r\n\0");
+            Thread.Sleep(50);
+            port.WriteLine("SPP:setScan on \r\n\0");
+            Thread.Sleep(50);
+            port.WriteLine("SPP:setConnInt 10 20 0 200 \r\n\0");
+            Thread.Sleep(50);
+        }
+
+        private static void ProcessBuffer(List<byte> buffer, string mode)
+        {
             while (buffer.Count >= 6)
             {
-                // Look for Header 0xAA 0x55
                 if (buffer[0] != 0xAA || buffer[1] != 0x55)
                 {
-                    buffer.RemoveAt(0); // Shift window
+                    buffer.RemoveAt(0);
                     continue;
                 }
 
-                byte type = buffer[2];
                 byte len = buffer[3];
-
-                // Check if we have the full packet
-                // Packet structure: AA 55 TYPE LEN [PAYLOAD...] CRC
-                // Total length = 4 (Header+Type+Len) + LEN + 1 (CRC) = 5 + LEN
-                // Wait... Original code says: crc check up to (Arr_answer[i + 3] + 2)
-                // And checks against Arr_answer[i + Arr_answer[i + 3] + 3]
-                // If i=0, len=buffer[3]. 
-                // Checksum index = 0 + len + 3.
-                // Total bytes needed = (len + 3) + 1 = len + 4 bytes FROM ZERO?
-                // No. AA(0) 55(1) TYPE(2) LEN(3).
-                // If LEN=1. Payload is at 4. CRC is at 5.
-                // Total size = 6.
-                // Formula: Total Size = LEN + 4.
-                
                 int packetSize = len + 4;
 
-                if (buffer.Count < packetSize)
-                {
-                    // Wait for more data
-                    break; 
-                }
+                if (buffer.Count < packetSize) break;
 
-                // Verify CRC
                 byte crcCalc = 0;
-                // Original: for (k = 0; k <= (Arr_answer[i + 3] + 2); k++)
-                // i=0. loop k=0 to len+2.
-                // Includes buffer[0]...buffer[len+2].
                 for (int k = 0; k <= len + 2; k++)
                 {
                     crcCalc = CrcTable[crcCalc ^ buffer[k]];
                 }
 
-                byte crcReceived = buffer[packetSize - 1]; // The last byte
-
-                if (crcCalc == crcReceived)
+                if (crcCalc == buffer[packetSize - 1])
                 {
-                    // Valid Packet
-                    ParsePacket(buffer.GetRange(0, packetSize).ToArray());
-                    buffer.RemoveRange(0, packetSize); // Consume packet
+                    ParsePacket(buffer.GetRange(0, packetSize).ToArray(), mode);
+                    buffer.RemoveRange(0, packetSize);
                 }
                 else
                 {
-                    // Bad CRC, skip header to try to resync
-                    // Console.WriteLine($"CRC Fail: Calc {crcCalc:X2} vs Recv {crcReceived:X2}");
                     buffer.RemoveAt(0);
                 }
             }
         }
 
-        private static void ParsePacket(byte[] packet)
+        private static void ParsePacket(byte[] packet, string mode)
         {
-            // packet[0]=AA, packet[1]=55, packet[2]=Type
             byte type = packet[2];
 
-            // Type 0x53: SpO2 & Pulse Rate
-            // Matches: (Arr_answer[i + 2] == 0x53)
-            if (type == 0x53)
+            if (type == 0x53 && packet.Length > 4 && packet[4] == 0x01)
             {
-                // Payload starts at index 4
-                // Sub-type check: (Arr_answer[i + 4] == 0x01)
-                // i=0. packet[4] should be 0x01.
-                if (packet.Length > 4 && packet[4] == 0x01)
-                {
-                    int spo2 = packet[5];
-                    // PR is 2 bytes: High byte at 7, Low byte at 6?
-                    // Original: (Arr_answer[i + 7] << 8) + Arr_answer[i + 6]
-                    int pr = (packet[7] << 8) + packet[6];
-                    
-                    // Status at packet[9]. 0x02 bit = Probe Off
-                    bool probeOff = (packet[9] & 0x02) == 0x02;
+                int spo2 = packet[5];
+                int pr = (packet[7] << 8) + packet[6];
+                bool probeOff = (packet[9] & 0x02) == 0x02;
 
-                    if (probeOff)
-                    {
-                        Console.WriteLine($"[Status] Probe Off / Finger Out");
-                    }
-                    else
-                    {
-                        // Valid Reading
-                        Console.WriteLine($"[Measurement] Heart Rate: {pr} bpm | SpO2: {spo2}%");
-                    }
+                if (probeOff)
+                {
+                    Console.WriteLine($"STATUS:PROBE_OFF");
                 }
-            }
-            // Type 0x40: NIBP (Blood Pressure)
-            else if (type == 0x40)
-            {
-                // Just notifying we saw a BP packet
-                // Subtype 0x04 = NIBP Test? 
-                // Subtype 0x05 or similar = Result? 
-                // (You can expand this later for BP)
+                else
+                {
+                    // Simplified output format for easy parsing by your wrapper app
+                    Console.WriteLine($"DATA:PR={pr},SPO2={spo2}");
+                }
             }
         }
     }
 }
-
