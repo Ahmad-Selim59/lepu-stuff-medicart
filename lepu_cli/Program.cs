@@ -33,7 +33,7 @@ namespace LepuCli
         {
             string mode = "auto";
             if (args.Contains("-heartrate")) mode = "heartrate";
-            if (args.Contains("-nibp")) mode = "nibp"; // Placeholder for future
+            if (args.Contains("-nibp")) mode = "nibp"; 
 
             string? selectedPort = AutoDetectPort();
 
@@ -53,6 +53,12 @@ namespace LepuCli
                     port.Open();
                     // Re-send init in case it was just a quick probe
                     InitializeConnection(port);
+
+                    if (mode == "nibp")
+                    {
+                         Console.WriteLine("Sending Start NIBP Command...");
+                         StartNibp(port);
+                    }
 
                     Console.WriteLine($"Streaming data... Mode: {mode}");
                     
@@ -166,6 +172,20 @@ namespace LepuCli
             Thread.Sleep(50);
         }
 
+        private static void StartNibp(SerialPort port)
+        {
+            // AA 55 40 02 01 29
+            byte[] cmd = { 0xAA, 0x55, 0x40, 0x02, 0x01, 0x29 };
+            port.Write(cmd, 0, cmd.Length);
+        }
+
+        private static void StopNibp(SerialPort port)
+        {
+            // AA 55 40 02 02 CB
+            byte[] cmd = { 0xAA, 0x55, 0x40, 0x02, 0x02, 0xCB };
+            port.Write(cmd, 0, cmd.Length);
+        }
+
         private static void ProcessBuffer(List<byte> buffer, string mode)
         {
             while (buffer.Count >= 6)
@@ -202,21 +222,65 @@ namespace LepuCli
         private static void ParsePacket(byte[] packet, string mode)
         {
             byte type = packet[2];
+            byte subType = (packet.Length > 4) ? packet[4] : (byte)0;
 
-            if (type == 0x53 && packet.Length > 4 && packet[4] == 0x01)
+            // SpO2 & Pulse Rate (Type 0x53)
+            if (type == 0x53 && subType == 0x01)
             {
-                int spo2 = packet[5];
-                int pr = (packet[7] << 8) + packet[6];
-                bool probeOff = (packet[9] & 0x02) == 0x02;
+                if (mode == "heartrate" || mode == "auto")
+                {
+                    int spo2 = packet[5];
+                    int pr = (packet[7] << 8) + packet[6];
+                    bool probeOff = (packet[9] & 0x02) == 0x02;
 
-                if (probeOff)
-                {
-                    Console.WriteLine($"STATUS:PROBE_OFF");
+                    if (probeOff)
+                    {
+                        Console.WriteLine($"STATUS:PROBE_OFF");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"DATA:PR={pr},SPO2={spo2}");
+                    }
                 }
-                else
+            }
+            // NIBP Status/Control (Type 0x40)
+            else if (type == 0x40)
+            {
+                if (subType == 0x01) Console.WriteLine("STATUS:NIBP_START");
+                else if (subType == 0x02) Console.WriteLine("STATUS:NIBP_END");
+            }
+            // NIBP Real-time Cuff Pressure (Type 0x42)
+            else if (type == 0x42 && subType == 0x01)
+            {
+                 // Real-time pressure during inflation
+                 // tmpSysVal = ((Arr_answer[i+5] & 0x0f) << 8) + Arr_answer[i+6];
+                 int cuffPressure = ((packet[5] & 0x0F) << 8) + packet[6];
+                 Console.WriteLine($"DATA:CUFF_PRESSURE={cuffPressure}");
+            }
+            // NIBP Final Result (Type 0x43)
+            else if (type == 0x43)
+            {
+                if (subType == 0x01)
                 {
-                    // Simplified output format for easy parsing by your wrapper app
-                    Console.WriteLine($"DATA:PR={pr},SPO2={spo2}");
+                    // Parsing logic from MainWindow.xaml.cs lines 1007-1010:
+                    // tmpSysVal = ((Arr_answer[i+5] & 0x0f) << 8) + Arr_answer[i+6];
+                    // tmpMapVal = Arr_answer[i+7];
+                    // tmpDiaVal = Arr_answer[i+8];
+                    // tmpPrVal = Arr_answer[i+9];
+                    
+                    int sys = ((packet[5] & 0x0F) << 8) + packet[6];
+                    int map = packet[7];
+                    int dia = packet[8];
+                    int pr = packet[9];
+                    
+                    bool irregularRhythm = (packet[5] & 0x80) == 0x80;
+
+                    Console.WriteLine($"DATA:NIBP_RESULT:SYS={sys},DIA={dia},MAP={map},PR={pr},IRR={irregularRhythm}");
+                }
+                else if (subType == 0x02) // Error
+                {
+                    int err = packet[5];
+                    Console.WriteLine($"STATUS:NIBP_ERROR={err}");
                 }
             }
         }
