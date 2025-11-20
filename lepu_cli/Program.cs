@@ -31,6 +31,23 @@ namespace LepuCli
 
         static void Main(string[] args)
         {
+            if (args.Contains("-help") || args.Contains("--help"))
+            {
+                Console.WriteLine("Lepu Device CLI Tool");
+                Console.WriteLine("Usage:");
+                Console.WriteLine("  lepu_cli.exe [options]");
+                Console.WriteLine("");
+                Console.WriteLine("Options:");
+                Console.WriteLine("  -heartrate    Start in continuous Heart Rate / SpO2 monitoring mode (default).");
+                Console.WriteLine("  -nibp         Trigger a Blood Pressure (NIBP) measurement immediately.");
+                Console.WriteLine("  -help         Show this help message.");
+                Console.WriteLine("");
+                Console.WriteLine("Examples:");
+                Console.WriteLine("  lepu_cli.exe -heartrate   # Stream PR/SpO2");
+                Console.WriteLine("  lepu_cli.exe -nibp        # Start BP cuff inflation & result");
+                return;
+            }
+
             string mode = "auto";
             if (args.Contains("-heartrate")) mode = "heartrate";
             if (args.Contains("-nibp")) mode = "nibp"; 
