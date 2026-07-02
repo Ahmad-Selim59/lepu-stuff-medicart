@@ -253,6 +253,14 @@ namespace LepuCli
             }
         }
 
+        private static double DecodeTemperatureCelsius(byte high, byte low)
+        {
+            int encoded = 3000 + (high << 8) + low;
+            double integerPart = Math.Floor(encoded / 100.0);
+            int decimalDigit = (int)Math.Floor((encoded % 100) / 10.0);
+            return integerPart + decimalDigit / 10.0;
+        }
+
         private static void ParsePacket(byte[] packet, string mode)
         {
             byte type = packet[2];
@@ -308,24 +316,31 @@ namespace LepuCli
                      }
                 }
             }
-            // Temperature (Type 0x72)
-            else if (type == 0x72)
+            // Temperature (Type 0x72, subtype 0x01, len 0x05)
+            else if (type == 0x72 && packet[3] == 0x05 && subType == 0x01)
             {
-                // Subtype 0x02 often is the mode/result
-                // Looking at code:
-                // tmpTempVal = ((Arr_answer[i+5] & 0x0F) << 8) + Arr_answer[i+6];
-                // tmpTempInt = (Arr_answer[i+5] & 0xF0) >> 4; (Mode?)
-                // Let's assume standard decimal format (integer part + decimal part logic varies).
-                // Based on typical usage:
-                // [5] is high byte, [6] is low byte for value * 10
-                // Or [5] is integer, [6] is decimal?
-                // Let's output generic TEMP bytes if unsure, but usually it's a short.
-                
-                // Let's assume simple 2-byte value for now:
-                int rawTemp = ((packet[5] & 0xFF) << 8) + packet[6];
-                double temp = rawTemp / 10.0; // Usually x10
-                
-                Console.WriteLine($"DATA:TEMP={temp:F1}");
+                if (mode != "temperature" && mode != "auto") return;
+
+                byte status = packet[5];
+                if ((status & 0x10) != 0)
+                {
+                    Console.WriteLine("STATUS:TEMP_INVALID");
+                }
+                else if ((status & 0x60) == 0x60)
+                {
+                    Console.WriteLine("STATUS:TEMP_OVERTIME");
+                }
+                else
+                {
+                    double temp = DecodeTemperatureCelsius(packet[6], packet[7]);
+                    bool measuring = (status & 0x60) == 0x20;
+                    bool finalReading = (status & 0x60) == 0x40;
+
+                    if (measuring || (finalReading && temp >= 32 && temp <= 43.09))
+                    {
+                        Console.WriteLine($"DATA:TEMP={temp:F1}");
+                    }
+                }
             }
             // Glucose (Type 0xE3, 0xE4)
             else if (type == 0xE3 || type == 0xE4)
