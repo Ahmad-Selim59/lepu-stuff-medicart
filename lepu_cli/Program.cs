@@ -55,7 +55,7 @@ namespace LepuCli
                 Console.WriteLine("  NIBP (Live): DATA:CUFF_PRESSURE={int}");
                 Console.WriteLine("  NIBP (End):  DATA:NIBP_RESULT:SYS={int},DIA={int},MAP={int},PR={int},IRR={bool}");
                 Console.WriteLine("  NIBP (Err):  STATUS:NIBP_ERROR={int}");
-                Console.WriteLine("  Glucose:     DATA:GLU={int} (mg/dL)");
+                Console.WriteLine("  Glucose:     DATA:GLU={value},UNIT=MMOL|MGDL | STATUS:GLU_LOW|GLU_HIGH|GLU_DEVICE={1-3}");
                 Console.WriteLine("  Temp:        DATA:TEMP={float} (Celsius)");
                 return;
             }
@@ -261,6 +261,37 @@ namespace LepuCli
             return integerPart + decimalDigit / 10.0;
         }
 
+        private static void ParseGlucoseReading(byte[] packet)
+        {
+            byte status = packet[5];
+            byte grade = (byte)(status & 0x30);
+
+            if (grade == 0x10)
+            {
+                Console.WriteLine("STATUS:GLU_LOW");
+                return;
+            }
+            if (grade == 0x20)
+            {
+                Console.WriteLine("STATUS:GLU_HIGH");
+                return;
+            }
+
+            bool mgDlUnit = (status & 0x01) != 0;
+            if (!mgDlUnit)
+            {
+                double mmol = (packet[6] & 0x0F) * 10
+                    + ((packet[7] & 0xF0) >> 4)
+                    + (packet[7] & 0x0F) / 10.0;
+                Console.WriteLine($"DATA:GLU={mmol:F1},UNIT=MMOL");
+            }
+            else
+            {
+                int mgDl = (packet[6] << 8) + packet[7];
+                Console.WriteLine($"DATA:GLU={mgDl},UNIT=MGDL");
+            }
+        }
+
         private static void ParsePacket(byte[] packet, string mode)
         {
             byte type = packet[2];
@@ -342,14 +373,23 @@ namespace LepuCli
                     }
                 }
             }
-            // Glucose (Type 0xE3, 0xE4)
-            else if (type == 0xE3 || type == 0xE4)
+            // Glucose device type response (Type 0xE4, len 0x02)
+            else if (type == 0xE4 && packet[3] == 0x02)
             {
-                // Often: [5] = Value High, [6] = Value Low (or vice versa)
-                // Let's dump it. Usually GLU is in mg/dL or mmol/L * 10 or 18.
-                int gluVal = ((packet[5] & 0xFF) << 8) + packet[6];
-                // Unit often in another byte or implied.
-                Console.WriteLine($"DATA:GLU={gluVal}");
+                if (mode != "glu" && mode != "auto") return;
+
+                int deviceType = packet[4];
+                if (deviceType > 0 && deviceType < 4)
+                {
+                    Console.WriteLine($"STATUS:GLU_DEVICE={deviceType}");
+                }
+            }
+            // Glucose reading (Type 0x73 or 0xE2, len 0x05, subtype 0x01)
+            else if ((type == 0x73 || type == 0xE2) && packet[3] == 0x05 && subType == 0x01)
+            {
+                if (mode != "glu" && mode != "auto") return;
+
+                ParseGlucoseReading(packet);
             }
         }
     }
